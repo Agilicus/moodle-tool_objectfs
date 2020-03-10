@@ -176,10 +176,13 @@ function tool_objectfs_should_tasks_run() {
     return false;
 }
 
+/**
+ * @param string $fs
+ * @return bool
+ */
 function tool_objectfs_filesystem_supports_presigned_urls($fs) {
-    $supportedlist = array();
-    $supportedlist[] = '\tool_objectfs\s3_file_system';
-    if (in_array($fs, $supportedlist)) {
+    $supportedlist = ['\tool_objectfs\s3_file_system'];
+    if (in_array($fs, $supportedlist) && call_user_func([$fs, 'supports_xsendfile'])) {
         return true;
     }
     return false;
