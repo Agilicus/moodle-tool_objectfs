@@ -43,7 +43,6 @@ if ($support) {
 
     $client = tool_objectfs_get_client($config);
     if ($client and $client->get_availability()) {
-
         $connection = $client->test_connection();
         if ($connection->success) {
             $fs = new $config->filesystem();

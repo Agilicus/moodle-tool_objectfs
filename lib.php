@@ -25,6 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+define('OBJECTFS_PLUGIN_NAME', 'tool_objectfs');
+
 define('OBJECT_LOCATION_ERROR', -1);
 define('OBJECT_LOCATION_LOCAL', 0);
 define('OBJECT_LOCATION_DUPLICATED', 1);
@@ -35,7 +37,6 @@ define('OBJECTFS_REPORT_LOG_SIZE', 1);
 define('OBJECTFS_REPORT_MIME_TYPE', 2);
 
 define('OBJECTFS_BYTES_IN_TERABYTE', 1099511627776);
-
 
 /**
  * @param string $contenthash
@@ -94,6 +95,7 @@ function set_objectfs_config($config) {
 }
 
 function get_objectfs_config() {
+    global $CFG;
     $config = new stdClass;
     $config->enabletasks = 0;
     $config->enablelogging = 0;
@@ -136,6 +138,14 @@ function get_objectfs_config() {
     $config->openstack_password = '';
     $config->openstack_tenantname = '';
     $config->openstack_projectid = '';
+
+    // Cloudfront CDN with Signed URLS - canned policy.
+    $config->cloudfrontresourcedomain = '';
+    $config->cloudfrontkeypairid = '';
+    $config->cloudfrontprivatekeypemfilepathname = $CFG->dataroot . '/objectfs/cloudfront.pem';
+
+    // SigningMethod - determine whether S3 or Cloudfront etc should be used.
+    $config->signingmethod = '';  // This will be the default if not otherwise set. Values ('' | 'CF').
 
     $storedconfig = get_config('tool_objectfs');
 

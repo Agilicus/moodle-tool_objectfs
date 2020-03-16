@@ -32,6 +32,7 @@ use Aws\S3\MultipartUploader;
 use Aws\S3\ObjectUploader;
 use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
+use tool_objectfs\local\store\cf_client;
 use tool_objectfs\local\store\object_client_base;
 
 define('AWS_API_VERSION', '2006-03-01');
@@ -42,10 +43,13 @@ define('AWS_CAN_DELETE_OBJECT', 2);
 class client extends object_client_base {
     protected $client;
     protected $bucket;
+    private $signingmethod;
+    private $config;
 
     public function __construct($config) {
         global $CFG;
         $this->autoloader = $CFG->dirroot . '/local/aws/sdk/aws-autoloader.php';
+        $this->config = $config;
 
         if ($this->get_availability() && !empty($config)) {
             require_once($this->autoloader);
@@ -53,6 +57,7 @@ class client extends object_client_base {
             $this->expirationtime = $config->expirationtime;
             $this->presignedminfilesize = $config->presignedminfilesize;
             $this->enablepresignedurls = $config->enablepresignedurls;
+            $this->signingmethod = $config->signingmethod;
             $this->set_client($config);
         } else {
             parent::__construct($config);
@@ -389,6 +394,10 @@ class client extends object_client_base {
      * @return string.
      */
     public function generate_presigned_url($contenthash, $headers) {
+        if ($this->signingmethod == 'cf') {
+            $client = new cf_client($this->config);
+            return $client->generate_presigned_url($contenthash, $headers);
+        }
         $key = $this->get_filepath_from_hash($contenthash);
         $params['Bucket'] = $this->bucket;
         $params['Key'] = $key;
