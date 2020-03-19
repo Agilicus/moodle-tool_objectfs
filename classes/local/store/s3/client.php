@@ -72,11 +72,18 @@ class client extends object_client_base {
     }
 
     public function set_client($config) {
-        $this->client = S3Client::factory(array(
-        'credentials' => array('key' => $config->s3_key, 'secret' => $config->s3_secret),
-        'region' => $config->s3_region,
-        'version' => AWS_API_VERSION
-        ));
+        # support base_url config for aws api
+        # compatible endpoints
+        $s3config = array(
+            'credentials' => array('key' => $config->s3_key, 'secret' => $config->s3_secret),
+            'region' => $config->s3_region,
+            'version' => AWS_API_VERSION
+        );
+
+        if ($config->s3_base_url) {
+            $s3config['base_url'] = $cfg->s3_base_url;
+        }
+        $this->client = S3Client::factory($s3config);
     }
 
     public function get_maximum_upload_size() {
@@ -319,7 +326,6 @@ class client extends object_client_base {
             'eu-west-3'      => 'eu-west-3 (Paris)',
             'sa-east-1'      => 'sa-east-1 (Sao Paulo)'
         );
-
         $settings->add(new \admin_setting_heading('tool_objectfs/aws',
             new \lang_string('settings:aws:header', 'tool_objectfs'), ''));
 
@@ -338,6 +344,10 @@ class client extends object_client_base {
         $settings->add(new \admin_setting_configselect('tool_objectfs/s3_region',
             new \lang_string('settings:aws:region', 'tool_objectfs'),
             new \lang_string('settings:aws:region_help', 'tool_objectfs'), '', $regionoptions));
+
+        $settings->add(new \admin_setting_configselect('tool_objectfs/s3_base_url',
+            new \lang_string('settings:aws:s3_base_url', 'tool_objectfs'),
+            new \lang_string('settings:aws:s3_base_url_help', 'tool_objectfs'), ''));
 
         return $settings;
     }

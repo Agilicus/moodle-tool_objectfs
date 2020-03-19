@@ -116,6 +116,7 @@ function get_objectfs_config() {
     $config->s3_secret = '';
     $config->s3_bucket = '';
     $config->s3_region = 'us-east-1';
+    $config->s3_base_url = '';
 
     // Digital ocean file system.
     $config->do_key = '';

@@ -88,6 +88,8 @@ $string['settings:aws:bucket'] = 'Bucket';
 $string['settings:aws:bucket_help'] = 'Amazon S3 bucket to store files in.';
 $string['settings:aws:region'] = 'region';
 $string['settings:aws:region_help'] = 'Amazon S3 API gateway region.';
+$string['settings:aws:base_url'] = 'region';
+$string['settings:aws:base_url_help'] = 'Alternate url for cnames or s3 compatible endpoints';
 
 $string['settings:do:header'] = 'DigitalOcean Spaces Settings';
 $string['settings:do:key'] = 'Key';
