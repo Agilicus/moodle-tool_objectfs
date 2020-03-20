@@ -324,8 +324,7 @@ class client extends object_client_base {
             'eu-west-1'      => 'eu-west-1 (Ireland)',
             'eu-west-2'      => 'eu-west-2 (London)',
             'eu-west-3'      => 'eu-west-3 (Paris)',
-            'sa-east-1'      => 'sa-east-1 (Sao Paulo)',
-            'auto'      => 'auto'
+            'sa-east-1'      => 'sa-east-1 (Sao Paulo)'
         );
         $settings->add(new \admin_setting_heading('tool_objectfs/aws',
             new \lang_string('settings:aws:header', 'tool_objectfs'), ''));
