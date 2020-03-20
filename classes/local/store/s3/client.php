@@ -72,8 +72,8 @@ class client extends object_client_base {
     }
 
     public function set_client($config) {
-        # support base_url config for aws api
-        # compatible endpoints
+        // support base_url config for aws api
+        // compatible endpoints
         $s3config = array(
             'credentials' => array('key' => $config->s3_key, 'secret' => $config->s3_secret),
             'region' => $config->s3_region,
