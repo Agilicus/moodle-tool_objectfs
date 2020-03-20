@@ -81,7 +81,7 @@ class client extends object_client_base {
         );
 
         if ($config->s3_base_url) {
-            $s3config['base_url'] = $cfg->s3_base_url;
+            $s3config['endpoint'] = $config->s3_base_url;
         }
         $this->client = S3Client::factory($s3config);
     }
@@ -324,7 +324,8 @@ class client extends object_client_base {
             'eu-west-1'      => 'eu-west-1 (Ireland)',
             'eu-west-2'      => 'eu-west-2 (London)',
             'eu-west-3'      => 'eu-west-3 (Paris)',
-            'sa-east-1'      => 'sa-east-1 (Sao Paulo)'
+            'sa-east-1'      => 'sa-east-1 (Sao Paulo)',
+            'auto'      => 'auto'
         );
         $settings->add(new \admin_setting_heading('tool_objectfs/aws',
             new \lang_string('settings:aws:header', 'tool_objectfs'), ''));
@@ -345,9 +346,9 @@ class client extends object_client_base {
             new \lang_string('settings:aws:region', 'tool_objectfs'),
             new \lang_string('settings:aws:region_help', 'tool_objectfs'), '', $regionoptions));
 
-        $settings->add(new \admin_setting_configselect('tool_objectfs/s3_base_url',
-            new \lang_string('settings:aws:s3_base_url', 'tool_objectfs'),
-            new \lang_string('settings:aws:s3_base_url_help', 'tool_objectfs'), ''));
+        $settings->add(new \admin_setting_configtext('tool_objectfs/s3_base_url',
+            new \lang_string('settings:aws:base_url', 'tool_objectfs'),
+            new \lang_string('settings:aws:base_url_help', 'tool_objectfs'), ''));
 
         return $settings;
     }
